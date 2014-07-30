@@ -61,3 +61,7 @@ If a **jsduck-guides.json** file exists then it will be picked up and used to ad
 
 When a **jsduck-categories.json** file is detected it is used in the generation of the documentation. See [https://github.com/senchalabs/jsduck/wiki/Categories](https://github.com/senchalabs/jsduck/wiki/Categories) for more information on JSDuck categories.
 
+## Credits
+
+ - Ronald Treur on TiDev (http://www.tidev.io/2014/05/14/duckumentation/)
+ - Fokke Zandbergen on TiDev (http://www.tidev.io/2014/06/18/documenting-a-new-widget/)
