@@ -2,6 +2,8 @@
 
 **sa.duckandcover** is a Titanium Studio plugin that can be used to auto generate Alloy project documentation with JSDuck.
 
+There is also an example TiAlloy project [here on GitHub](https://github.com/magnatronus/testdocumentor) that shows the use of the plug-in.
+
 
 ## Prerequisites
 
