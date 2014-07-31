@@ -65,5 +65,6 @@ When a **jsduck-categories.json** file is detected it is used in the generation 
 
 ## Credits
 
+ - Apperson Labs - http://appersonlabs.com/2013/04/12/titanium-build-plugins-in-sdk-3-x-x/
  - Ronald Treur on TiDev (http://www.tidev.io/2014/05/14/duckumentation/)
  - Fokke Zandbergen on TiDev (http://www.tidev.io/2014/06/18/documenting-a-new-widget/)
