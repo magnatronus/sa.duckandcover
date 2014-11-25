@@ -40,7 +40,7 @@ The default output directory specified in *sa.duckandcover* is the *docs* direct
 
 ```
 //change this to specify where the docs will be generated
-var doc_output_dir = './docs';
+var doc_output_dir = '/docs';
 ```
 
 by changing the variable *doc_output_dir* you can modify where the documentation is generated.

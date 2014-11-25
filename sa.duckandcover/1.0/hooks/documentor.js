@@ -2,7 +2,10 @@
  * documentor.js
  * 
  * Plugin to generate project documentation for an Alloy based project using JSDuck
- * version: 1.0.1
+ * version: 1.0.2
+ * 
+ * Nov 2014: updated as 3.4.x seems to break the current version as it no longer runs at project dir level
+ * so added build.projectDir to all file and dir references
  * 
  * This is a port of my duckandcover alloy.jmk project to a TiStudio plugin
  * 
@@ -24,8 +27,8 @@
  * @author Steve Rogers (@sarmcon)
  */
 
-//change this to specify where the docs will be generated
-var doc_output_dir = './docs';
+//change this to specify where the docs will be generated as a sub directory of the main project
+var doc_output_dir = '/docs';
 
 /**
  * Hooks for TiStudio
@@ -48,7 +51,7 @@ exports.init = function (logger, config, cli, appc) {
 				"--no-source": true,
 				"--title": "Project: " + build.tiapp.name + " (" +  build.tiapp.id + ") - version: " + build.tiapp.version,		
 				"--footer": "Copyright " + build.tiapp.copyright + " ( built using Ti SDK:" + build.tiapp['sdk-version'] + ")",
-				"--output": doc_output_dir,
+				"--output": build.projectDir + doc_output_dir,
 				"--ignore-global": true,
     			"--external": [
         			"Alloy",
@@ -65,26 +68,35 @@ exports.init = function (logger, config, cli, appc) {
 			logger.info("----- DUCKANDCOVER PREPARATION -----");
 			
 			// If README.md exists use as index page for documentation
-			if(fs.existsSync('./README.md')){
+			if(fs.existsSync(build.projectDir + '/README.md')){
 				logger.info("Including README.md as welcome page");
-				data["--welcome"] = "./README.md";
+				data["--welcome"] = build.projectDir + "/README.md";
+			}
+			else{
+				logger.warn('No README.MD found!');
 			}
 
 			// If guides are required include here
-			if(fs.existsSync('./jsduck-guides.json')){
+			if(fs.existsSync(build.projectDir+ '/jsduck-guides.json')){
 				logger.info("Adding jsduck-guides.json");
-				data["--guides"] = "jsduck-guides.json";
+				data["--guides"] = build.projectDir + "/jsduck-guides.json";
+			}
+			else{
+				logger.warn('No jsduck-guides.json found!');
 			}
 			
 			// If categories defined include them here
-			if(fs.existsSync('./jsduck-categories.json')){
+			if(fs.existsSync(build.projectDir+ '/jsduck-categories.json')){
 				logger.info("Adding jsduck-categories.json");
-				data["--categories"] = "jsduck-categories.json";
+				data["--categories"] = build.projectDir +  "/jsduck-categories.json";
+			}
+			else{
+				logger.warn('No jsduck-categories.json found!');
 			}
 
 			// now create the jsduck config file
 			logger.info("Creating jsduck.json config file");
-			fs.writeFileSync("jsduck.json", JSON.stringify(data));
+			fs.writeFileSync(build.projectDir+ "/jsduck.json", JSON.stringify(data));
            	finished();
            	
         }
@@ -100,8 +112,14 @@ exports.init = function (logger, config, cli, appc) {
 			// Run JS DUCK on source
 			logger.info("----- DOCUMENTING PROJECT -----");
 			var exec = require("child_process").exec;
-			exec("jsduck");
-			logger.info("- Project Documentation has been generated in the " + doc_output_dir + ' directory.');
+			exec("jsduck --config " + build.projectDir + '/jsduck.json', function(error,stdout, stderr){
+				if(!error){
+					logger.info("- Project Documentation has been generated in the " + build.projectDir + doc_output_dir + ' directory.');
+				}
+				else{
+					logger.error(stderr);	
+				}
+			});
 			finished();
 			
 		}
